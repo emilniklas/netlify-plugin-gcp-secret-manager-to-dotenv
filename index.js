@@ -60,9 +60,9 @@ module.exports = {
     }
 
     async function createFileAndExpose(name, data, envName) {
-      await mkdir(join(constants.FUNCTIONS_DIST, secretdir), { recursive: true });
+      await mkdir(join(constants.FUNCTIONS_SRC, secretdir), { recursive: true });
       const relativePath = join(secretdir, name);
-      await writeFile(resolve(constants.FUNCTIONS_DIST, relativePath), data);
+      await writeFile(resolve(constants.FUNCTIONS_SRC, relativePath), data);
       environment[envName] = relativePath;
     }
 
