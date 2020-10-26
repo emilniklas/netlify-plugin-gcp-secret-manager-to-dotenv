@@ -1,0 +1,11 @@
+name: netlify-plugin-gcp-secret-manager-to-dotenv
+inputs:
+  - name: variables
+    description: Mappings from names of secrets to environment variables. Environment variables will be populated with secret value.
+    default: {}
+  - name: files
+    description: Mappings from names of file secrets to environment variables. Environment variable will be populated with file path.
+    default: {}
+  - name: secretdir
+    description: The name of the directory that will be created in the functions dist directory with any file-based secrets.
+    default: secrets

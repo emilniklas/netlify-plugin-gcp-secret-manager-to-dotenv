@@ -1,0 +1,7 @@
+{
+  "name": "netlify-plugin-gcp-secret-manager-to-dotenv",
+  "version": "0.1.0",
+  "dependencies": {
+    "@google-cloud/secret-manager": "^3.2.0"
+  }
+}
