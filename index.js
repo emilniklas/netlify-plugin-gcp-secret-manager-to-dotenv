@@ -3,6 +3,10 @@ const { createHash } = require("crypto");
 const { resolve, join } = require("path");
 const { writeFile, mkdir } = require("fs").promises;
 
+if (!process.env.GCP_SERVICE_ACCOUNT) {
+  throw new Error("Please set the GCP_SERVICE_ACCOUNT environment variable in Netlify to the JSON service account credentials.");
+}
+
 const credentials = JSON.parse(process.env.GCP_SERVICE_ACCOUNT);
 
 const client = new SecretManagerServiceClient({
@@ -35,6 +39,9 @@ module.exports = {
     ]);
 
     async function exposeServiceAccount() {
+      if (constants.FUNCTIONS_SRC == null) {
+        return;
+      }
       await createFileAndExpose("credentials.json", process.env.GCP_SERVICE_ACCOUNT, "GOOGLE_APPLICATION_CREDENTIALS");
       console.log(`Exposed provided service account as GOOGLE_APPLICATION_CREDENTIALS`);
     }
@@ -60,6 +67,9 @@ module.exports = {
     }
 
     async function createFileAndExpose(name, data, envName) {
+      if (constants.FUNCTIONS_SRC == null) {
+        throw new Error("To expose file secrets, a functions directory must be set.");
+      }
       await mkdir(join(constants.FUNCTIONS_SRC, secretdir), { recursive: true });
       const relativePath = join(secretdir, name);
       await writeFile(resolve(constants.FUNCTIONS_SRC, relativePath), data);
